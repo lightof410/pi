@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.5.2-fix1]
+
+### Changed
+
+- `allowEmptySignature` now defaults to true for Anthropic-compatible endpoints other than api.anthropic.com: gateways that return thinking without a signature keep the block on replay instead of flattening the reasoning into plain assistant text, which models repeated in later answers. Set `compat.allowEmptySignature` to override
+
 ## [1.5.2] - 2026-11-10
 
 ### Fixed

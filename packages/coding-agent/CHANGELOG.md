@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.5.2-fix1]
+
+### Changed
+
+- `compat.allowEmptySignature` now defaults to `true` for every endpoint except `api.anthropic.com`: Anthropic-compatible gateways emit thinking without a signature, and flattening those blocks to plain text leaked the model's reasoning into the assistant's answer, which it then repeated in later replies
+
 ## [1.5.2] - 2026-11-10
 
 ### New Features

@@ -16,13 +16,16 @@ class PayloadCaptured extends Error {
 	}
 }
 
-function makeModel(allowEmptySignature?: boolean): Model<"anthropic-messages"> {
+function makeModel(
+	allowEmptySignature?: boolean,
+	baseUrl = "http://127.0.0.1:9/anthropic",
+): Model<"anthropic-messages"> {
 	return {
 		id: "mimo-v2.6-pro",
 		name: "MiMo-V2.5-Pro",
 		api: "anthropic-messages",
 		provider: "xiaomi-token-plan-ams",
-		baseUrl: "http://127.0.0.1:9/anthropic",
+		baseUrl,
 		reasoning: true,
 		input: ["text"],
 		cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
@@ -79,8 +82,17 @@ async function capturePayload(model: Model<"anthropic-messages">, context: Conte
 }
 
 describe("Anthropic empty thinking signature compat", () => {
-	it("converts empty-signature thinking to text by default", async () => {
+	it("preserves empty-signature thinking by default for compatible gateways", async () => {
 		const payload = await capturePayload(makeModel(), makeContext(""));
+		const assistant = payload.messages?.find((message) => message.role === "assistant");
+		expect(assistant?.content).toEqual([{ type: "thinking", thinking: "internal reasoning", signature: "" }]);
+	});
+
+	it("converts empty-signature thinking to text by default on Anthropic's own endpoint", async () => {
+		const payload = await capturePayload(
+			makeModel(undefined, "https://api.anthropic.com"),
+			makeContext(""),
+		);
 		const assistant = payload.messages?.find((message) => message.role === "assistant");
 		expect(assistant?.content).toEqual([{ type: "text", text: "internal reasoning" }]);
 	});
