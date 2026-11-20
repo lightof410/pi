@@ -16,6 +16,7 @@
 - Updated `openai` to 7.59.0
 - Updated `@google/genai` to 2.32.0. The Google adapters turn off its automatic continuation, so a `CONTINUATION` finish ends the turn with stop reason `length` ([#12103](https://github.com/earendil-works/pi/pull/12103) by [@rometi](https://github.com/rometi))
 - Anthropic message threads are now on by default for any provider whose baseUrl is on api.anthropic.com, not only the `anthropic` provider ([#11987](https://github.com/earendil-works/pi/issues/11987))
+- `allowEmptySignature` now defaults to true for Anthropic-compatible endpoints other than api.anthropic.com: gateways that return thinking without a signature keep the block on replay instead of flattening the reasoning into plain assistant text, which models repeated in later answers. Set `compat.allowEmptySignature` to override
 - `openai-completions` now sends system messages of reasoning models (the system prompt and mid-conversation system messages) with the `developer` role only to `api.openai.com`; all other hosts, including Azure and OpenRouter, get `system`. Set `compat.supportsDeveloperRole` to override ([#10741](https://github.com/earendil-works/pi/issues/10741))
 - Qwen Token Plan providers now use the current gateways (`token-plan.maas.qwencloudapi.com` international, `token-plan.maas.qianwenaiapi.com` China), and `qwen-token-plan` and `qwen-token-plan-cn` are named "Qwen Token Plan Team" and "Qwen Token Plan Team CN". Provider IDs are unchanged, and the old `aliyuncs.com` hosts still work ([#11773](https://github.com/earendil-works/pi/issues/11773))
 

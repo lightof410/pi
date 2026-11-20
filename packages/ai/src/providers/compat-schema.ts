@@ -486,8 +486,8 @@ const AnthropicMessagesCompatProperties = {
 	),
 	allowEmptySignature: opt(
 		bool({
-			description: "Whether to replay empty thinking signatures instead of converting thinking to text.",
-			default: false,
+			description:
+				"Whether to replay empty thinking signatures instead of converting thinking to text. Default: true unless the baseUrl is on api.anthropic.com, whose endpoint rejects unsigned thinking on replay; Anthropic-compatible gateways expect the block back verbatim.",
 		}),
 	),
 	supportsStrictTools: opt(

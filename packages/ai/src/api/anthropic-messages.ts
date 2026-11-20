@@ -239,7 +239,12 @@ function getAnthropicCompat(model: Model<"anthropic-messages">) {
 		sessionAffinityFormat: model.compat?.sessionAffinityFormat ?? (isOpenRouter ? "openrouter" : undefined),
 		supportsCacheControlOnTools: model.compat?.supportsCacheControlOnTools ?? true,
 		supportsTemperature: model.compat?.supportsTemperature ?? true,
-		allowEmptySignature: model.compat?.allowEmptySignature ?? false,
+		// Anthropic's own endpoint rejects replayed thinking blocks whose signature is missing or
+		// empty, so there the block is flattened to plain text. Anthropic-compatible gateways have
+		// no signing key and routinely emit unsigned thinking; flattening those leaks the model's
+		// reasoning into the assistant's answer, which it then repeats in the next reply. Preserve
+		// the block unless the endpoint is Anthropic's own.
+		allowEmptySignature: model.compat?.allowEmptySignature ?? !model.baseUrl.includes("api.anthropic.com"),
 		supportsStrictTools: model.compat?.supportsStrictTools ?? false,
 		supportsMidConvoSystemMessages: model.compat?.supportsMidConvoSystemMessages ?? false,
 		supportsMidConvoToolChanges: model.compat?.supportsMidConvoToolChanges ?? false,

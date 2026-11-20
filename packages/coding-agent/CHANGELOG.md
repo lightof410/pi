@@ -19,6 +19,7 @@
 
 ### Changed
 
+- `compat.allowEmptySignature` now defaults to `true` for every endpoint except `api.anthropic.com`: Anthropic-compatible gateways emit thinking without a signature, and flattening those blocks to plain text leaked the model's reasoning into the assistant's answer, which it then repeated in later replies
 - Qwen Token Plan providers now use the current gateways (`token-plan.maas.qwencloudapi.com` international, `token-plan.maas.qianwenaiapi.com` China), and `qwen-token-plan` and `qwen-token-plan-cn` are named "Qwen Token Plan Team" and "Qwen Token Plan Team CN". Provider IDs are unchanged, and the old `aliyuncs.com` hosts still work ([#11773](https://github.com/earendil-works/pi/issues/11773))
 - Updated `undici` to 8.12.4 for security advisories GHSA-mqg3-3v4r-cm32, GHSA-7xg3-fphp-28hg, GHSA-5rm8-gv32-r954, GHSA-9v6h-8rgp-m69f, GHSA-3g9m-rv3r-w5w2, and GHSA-r4pc-4jcp-7pqc ([#12200](https://github.com/earendil-works/pi/issues/12200))
 - The default model for the `openai`, `azure`, and `openai-codex` providers is now GPT-6.2 Sol (`gpt-6.2-sol`) instead of GPT-6.1 Sol, at the same price
